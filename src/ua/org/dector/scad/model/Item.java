@@ -18,10 +18,14 @@ public class Item {
         this.type = type;
 
         switch (type) {
-            case START: node = new BeginNode(); break;
-            case X:     node = new Conditional(); break;
-            case Y:     node = new Operational(); break;
-            case END:   node = new EndNode(); break;
+            case START:
+                node = new BeginNode(); break;
+            case X:
+                node = new Conditional(new Condition(Condition.nextId())); break;
+            case Y:
+                node = new Operational(new Signal(Signal.nextId())); break;
+            case END:
+                node = new EndNode(); break;
             default: break;
         }
     }
@@ -56,5 +60,20 @@ public class Item {
 
     public Node getNode() {
         return node;
+    }
+    
+    public String toString() {
+        String s;
+        
+        switch (type) {
+            case ARROW_DOWN:
+                s = "V"; break;
+            case ARROW_UP:
+                s = "^"; break;
+            default:
+                s = node.toString();
+        }
+        
+        return s;
     }
 }

@@ -8,11 +8,19 @@ public class Condition {
 
     private int id;
 
+    public Condition(int id) {
+        this.id = id;
+    }
+
     public static int nextId() {
         return ++lastId;
     }
 
     public static int getLasId() {
         return lastId;
+    }
+
+    public String toString() {
+        return "X" + id;
     }
 }

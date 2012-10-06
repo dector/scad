@@ -9,4 +9,8 @@ public class BeginNode extends Node {
     }
 
     public void setPrev(Node prev) {}
+
+    public String toString() {
+        return "B";
+    }
 }

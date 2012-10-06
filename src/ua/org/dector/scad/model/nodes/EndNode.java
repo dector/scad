@@ -9,4 +9,8 @@ public class EndNode extends Node {
     public Node getNext() {
         return null;
     }
+
+    public String toString() {
+        return "E";
+    }
 }

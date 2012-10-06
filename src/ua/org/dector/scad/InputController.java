@@ -20,6 +20,9 @@ public class InputController implements InputProcessor {
 
         switch (keycode) {
             case N: app.createDocument(); break;
+            case E: app.enterEditMode(); break;
+            case ESCAPE: app.exitEditMode(); break;
+            case R: app.reRender(); break;
             default: handled = false;
         }
 

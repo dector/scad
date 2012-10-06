@@ -3,7 +3,7 @@ package ua.org.dector.scad.model.nodes;
 /**
  * @author dector
  */
-public class Node {
+public abstract class Node {
     private Node next;
     private Node prev;
 
@@ -22,4 +22,6 @@ public class Node {
     public void setPrev(Node prev) {
         this.prev = prev;
     }
+    
+    public abstract String toString();
 }

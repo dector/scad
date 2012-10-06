@@ -10,6 +10,10 @@ public class Conditional extends Node {
 
     private Condition condition;
 
+    public Conditional(Condition condition) {
+        this.condition = condition;
+    }
+
     public Node getNextNegative() {
         return nextNegative;
     }
@@ -24,5 +28,9 @@ public class Conditional extends Node {
 
     public void setCondition(Condition condition) {
         this.condition = condition;
+    }
+
+    public String toString() {
+        return condition.toString();
     }
 }
