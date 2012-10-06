@@ -105,13 +105,7 @@ public class App extends Game {
             Item nextItem = prevItem.getNext();
             Item newItem = new Item(Item.Type.Y, id);
 
-            newItem.setPrev(prevItem);
-            newItem.setNext(nextItem);
-
-            prevItem.setNext(newItem);
-            nextItem.setPrev(newItem);
-
-            selectNext(false);
+            insertItemBetweenAndSelect(newItem, prevItem, nextItem);
 
             setRendererDirty();
         }
@@ -132,13 +126,9 @@ public class App extends Game {
             Item nextItem = prevItem.getNext();
             Item newItem = new Item(Item.Type.X, id);
 
-            newItem.setPrev(prevItem);
-            newItem.setNext(nextItem);
+            insertItemBetweenAndSelect(newItem, prevItem, nextItem);
 
-            prevItem.setNext(newItem);
-            nextItem.setPrev(newItem);
-
-            selectNext(false);
+            createArrow(enterId);
 
             setRendererDirty();
         }
@@ -159,13 +149,7 @@ public class App extends Game {
             Item nextItem = prevItem.getNext();
             Item newItem = new Arrow(Item.Type.ARROW_UP, id);
 
-            newItem.setPrev(prevItem);
-            newItem.setNext(nextItem);
-
-            prevItem.setNext(newItem);
-            nextItem.setPrev(newItem);
-
-            selectNext(false);
+            insertItemBetweenAndSelect(newItem, prevItem, nextItem);
 
             mode = Mode.DOWN_ARROW_INSERT;
             unpairedArrow = (Arrow)newItem;
@@ -182,6 +166,16 @@ public class App extends Game {
         Item prevItem = nextItem.getPrev();
         Item newItem = new Arrow(Item.Type.ARROW_DOWN, unpairedArrow.getId());
 
+        insertItemBetweenAndSelect(newItem, prevItem, nextItem);
+
+        unpairedArrow = null;
+
+        mode = Mode.EDIT;
+
+        setRendererDirty();
+    }
+    
+    private void insertItemBetweenAndSelect(Item newItem, Item prevItem, Item nextItem) {
         newItem.setPrev(prevItem);
         newItem.setNext(nextItem);
 
@@ -189,12 +183,6 @@ public class App extends Game {
         nextItem.setPrev(newItem);
 
         selectPrev(false);
-
-        unpairedArrow = null;
-
-        mode = Mode.EDIT;
-
-        setRendererDirty();
     }
                                              
     private int enterId(int defaultId) {
