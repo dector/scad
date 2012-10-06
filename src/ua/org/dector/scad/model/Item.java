@@ -15,15 +15,23 @@ public class Item {
     private Node node;
 
     public Item(Type type) {
+        this(type, -1);
+    }
+
+    public Item(Type type, int id) {
         this.type = type;
 
         switch (type) {
             case START:
                 node = new BeginNode(); break;
-            case X:
-                node = new Conditional(new Condition(Condition.nextId())); break;
-            case Y:
-                node = new Operational(new Signal(Signal.nextId())); break;
+            case X: {
+                Condition cond = new Condition((id != -1) ? id : Condition.nextId());
+                node = new Conditional(cond);
+            } break;
+            case Y: {
+                Signal signal = new Signal((id != -1) ? id : Signal.nextId());
+                node = new Operational(signal);
+            } break;
             case END:
                 node = new EndNode(); break;
             default: break;

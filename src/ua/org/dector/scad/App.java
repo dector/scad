@@ -2,8 +2,12 @@ package ua.org.dector.scad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
+import ua.org.dector.scad.model.nodes.Signal;
+
+import javax.swing.*;
 
 /**
  * @author dector
@@ -48,6 +52,8 @@ public class App extends Game {
     }
 
     public void selectPrev(boolean append) {
+        if (mode != Mode.EDIT) return;
+        
         Item prev = document.getCurrentItem().getPrev();
         if (prev == null) return;
         
@@ -61,6 +67,8 @@ public class App extends Game {
     }
 
     public void selectNext(boolean append) {
+        if (mode != Mode.EDIT) return;
+
         Item next = document.getCurrentItem().getNext();
         if (next == null) return;
 
@@ -71,6 +79,50 @@ public class App extends Game {
 
         document.setCurrentItem(next);
         setRendererDirty();
+    }
+    
+    public void createOperationalNode(boolean enterId) {
+        if (mode != Mode.EDIT) return;
+        if (document.getCurrentItem().getType() == Item.Type.END) return;
+        
+        int id;
+        if (enterId)
+            id = enterId(Signal.getLasId() + 1);
+        else
+            id = Signal.nextId();
+        
+        if (id != -1) {
+            Item prevItem = document.getCurrentItem();
+            Item nextItem = prevItem.getNext();
+            Item newItem = new Item(Item.Type.Y, id);
+
+            newItem.setPrev(prevItem);
+            newItem.setNext(nextItem);
+
+            prevItem.setNext(newItem);
+            nextItem.setPrev(newItem);
+
+            selectNext(false);
+
+            setRendererDirty();
+        }
+    }
+    
+    private int enterId(int defaultId) {
+        final int[] id = new int[1];
+
+        String text = JOptionPane.showInputDialog(null, "Input inner signal id", String.valueOf(defaultId));
+
+        try {
+            id[0] = Integer.valueOf(text);
+        } catch (NumberFormatException e) {
+            id[0] = -1;
+        }
+
+        if (id[0] == Signal.getLasId() + 1)
+            Signal.nextId();
+
+        return id[0];
     }
 
     public void render() {

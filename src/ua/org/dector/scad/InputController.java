@@ -12,6 +12,8 @@ import static com.badlogic.gdx.Input.Keys.*;
 public class InputController implements InputProcessor {
     private App app;
 
+    private boolean shiftPressed;
+
     public InputController(App app) {
         this.app = app;
     }
@@ -30,10 +32,17 @@ public class InputController implements InputProcessor {
                 app.exitEditMode();
                 break;
             case LEFT:
-                app.selectPrev(Gdx.input.isKeyPressed(SHIFT_LEFT));
+                app.selectPrev(shiftPressed);
                 break;
             case RIGHT:
-                app.selectNext(Gdx.input.isKeyPressed(SHIFT_LEFT));
+                app.selectNext(shiftPressed);
+                break;
+            case Y:
+                app.createOperationalNode(shiftPressed);
+                break;
+            case SHIFT_LEFT:
+            case SHIFT_RIGHT:
+                shiftPressed = true;
                 break;
             default:
                 handled = false;
@@ -43,7 +52,18 @@ public class InputController implements InputProcessor {
     }
 
     public boolean keyUp(int keycode) {
-        return false;
+        boolean handled = true;
+
+        switch (keycode) {
+            case SHIFT_LEFT:
+            case SHIFT_RIGHT:
+                shiftPressed = false;
+                break;
+            default:
+                handled = false;
+        }
+
+        return handled;
     }
 
     public boolean keyTyped(char character) {
