@@ -1,5 +1,6 @@
 package ua.org.dector.scad;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
@@ -19,10 +20,23 @@ public class InputController implements InputProcessor {
         boolean handled = true;
 
         switch (keycode) {
-            case N: app.createDocument(); break;
-            case E: app.enterEditMode(); break;
-            case ESCAPE: app.exitEditMode(); break;
-            default: handled = false;
+            case N:
+                app.createDocument();
+                break;
+            case E:
+                app.enterEditMode();
+                break;
+            case ESCAPE:
+                app.exitEditMode();
+                break;
+            case LEFT:
+                app.selectPrev(Gdx.input.isKeyPressed(SHIFT_LEFT));
+                break;
+            case RIGHT:
+                app.selectNext(Gdx.input.isKeyPressed(SHIFT_LEFT));
+                break;
+            default:
+                handled = false;
         }
 
         return handled;

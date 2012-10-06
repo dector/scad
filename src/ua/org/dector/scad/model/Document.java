@@ -9,12 +9,18 @@ public class Document {
     private Item head;
     
     private LinkedList<Item> selectedItems;
+    private Item currentItem;
     
     public Document() {
         selectedItems = new LinkedList<Item>();
         
         head = new Item(Item.Type.START);
-        head.setNext(new Item(Item.Type.END));
+        Item end = new Item(Item.Type.END);
+        head.setNext(end);
+        end.setPrev(head);
+        
+        selectOnly(head);
+        setCurrentItem(head);
     }
 
     public Item getHead() {
@@ -45,5 +51,13 @@ public class Document {
     
     public int getSelectedSize() {
         return selectedItems.size();
+    }
+    
+    public void setCurrentItem(Item item) {
+        currentItem = item;
+    }
+
+    public Item getCurrentItem() {
+        return currentItem;
     }
 }

@@ -3,6 +3,7 @@ package ua.org.dector.scad;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import ua.org.dector.scad.model.Document;
+import ua.org.dector.scad.model.Item;
 
 /**
  * @author dector
@@ -34,8 +35,6 @@ public class App extends Game {
         if (mode == Mode.EDIT) return;
 
         mode = Mode.EDIT;
-        if (document.getSelectedSize() == 0)
-            document.selectOnly(document.getHead());
 
         setRendererDirty();
     }
@@ -45,6 +44,32 @@ public class App extends Game {
 
         mode = Mode.NONE;
 
+        setRendererDirty();
+    }
+
+    public void selectPrev(boolean append) {
+        Item prev = document.getCurrentItem().getPrev();
+        if (prev == null) return;
+        
+        if (append)
+            document.select(prev);
+        else
+            document.selectOnly(prev);
+        
+        document.setCurrentItem(prev);
+        setRendererDirty();
+    }
+
+    public void selectNext(boolean append) {
+        Item next = document.getCurrentItem().getNext();
+        if (next == null) return;
+
+        if (append)
+            document.select(next);
+        else
+            document.selectOnly(next);
+
+        document.setCurrentItem(next);
         setRendererDirty();
     }
 
