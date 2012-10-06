@@ -26,6 +26,8 @@ public class App extends Game {
     public void createDocument() {
         if (document == null) 
             document = new Document();
+
+        setRendererDirty();
     }
 
     public void enterEditMode() {
@@ -34,20 +36,19 @@ public class App extends Game {
         mode = Mode.EDIT;
         if (document.getSelectedSize() == 0)
             document.selectOnly(document.getHead());
+
+        setRendererDirty();
     }
 
     public void exitEditMode() {
         if (mode != Mode.EDIT) return;
 
         mode = Mode.NONE;
+
+        setRendererDirty();
     }
 
     public void render() {
-        /*if (document != null)
-            renderer.render(document);*/
-    }
-
-    public void reRender() {
         if (document != null)
             renderer.render(document);
     }
@@ -58,5 +59,9 @@ public class App extends Game {
 
     public Mode getMode() {
         return mode;
+    }
+
+    public void setRendererDirty() {
+        renderer.setDirty(true);
     }
 }

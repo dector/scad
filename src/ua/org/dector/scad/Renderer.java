@@ -23,12 +23,16 @@ public class Renderer {
     
     private int width;
     private int height;
+
+    private boolean dirty;
     
     public Renderer(App app, int width, int height) {
         this.app = app;
         
         this.width = width;
         this.height = height;
+
+        setDirty(true);
         
         sb = new SpriteBatch();
         initFonts();
@@ -44,6 +48,8 @@ public class Renderer {
     }
     
     public void render(Document doc) {
+        if (! dirty) return;
+
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         
         sb.begin();
@@ -70,5 +76,11 @@ public class Renderer {
         }
         
         sb.end();
+
+        setDirty(false);
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }
