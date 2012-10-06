@@ -2,9 +2,9 @@ package ua.org.dector.scad;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
+import ua.org.dector.scad.model.nodes.Arrow;
 import ua.org.dector.scad.model.nodes.Condition;
 import ua.org.dector.scad.model.nodes.Signal;
 
@@ -20,6 +20,8 @@ public class App extends Game {
     private Renderer renderer;
 
     private Mode mode;
+    
+    private Arrow unpairedArrow;
     
     public void create() {
         renderer = new Renderer(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -53,7 +55,8 @@ public class App extends Game {
     }
 
     public void selectPrev(boolean append) {
-        if (mode != Mode.EDIT) return;
+        if (mode != Mode.EDIT
+                && mode != Mode.DOWN_ARROW_INSERT) return;
         
         Item curr = document.getCurrentItem();
         Item prev = curr.getPrev();
@@ -70,7 +73,8 @@ public class App extends Game {
     }
 
     public void selectNext(boolean append) {
-        if (mode != Mode.EDIT) return;
+        if (mode != Mode.EDIT
+                && mode != Mode.DOWN_ARROW_INSERT) return;
 
         Item curr = document.getCurrentItem();
         Item next = curr.getNext();
@@ -140,6 +144,59 @@ public class App extends Game {
         }
     }
     
+    public void createArrow(boolean enterId) {
+        if (mode != Mode.EDIT) return;
+        if (document.getCurrentItem().getType() == Item.Type.END) return;
+
+        int id;
+        if (enterId)
+            id = enterId(Arrow.getLasId() + 1);
+        else
+            id = Arrow.nextId();
+
+        if (id != -1) {
+            Item prevItem = document.getCurrentItem();
+            Item nextItem = prevItem.getNext();
+            Item newItem = new Arrow(Item.Type.ARROW_UP, id);
+
+            newItem.setPrev(prevItem);
+            newItem.setNext(nextItem);
+
+            prevItem.setNext(newItem);
+            nextItem.setPrev(newItem);
+
+            selectNext(false);
+
+            mode = Mode.DOWN_ARROW_INSERT;
+            unpairedArrow = (Arrow)newItem;
+
+            setRendererDirty();
+        }
+    }
+
+    public void insertDownArrow() {
+        if (mode != Mode.DOWN_ARROW_INSERT) return;
+        if (document.getCurrentItem().getType() == Item.Type.BEGIN) return;
+
+        Item nextItem = document.getCurrentItem();
+        Item prevItem = nextItem.getPrev();
+        Item newItem = new Arrow(Item.Type.ARROW_DOWN, unpairedArrow.getId());
+
+        newItem.setPrev(prevItem);
+        newItem.setNext(nextItem);
+
+        prevItem.setNext(newItem);
+        nextItem.setPrev(newItem);
+
+        selectPrev(false);
+
+        unpairedArrow = null;
+
+        mode = Mode.EDIT;
+
+        setRendererDirty();
+    }
+                                             
     private int enterId(int defaultId) {
         final int[] id = new int[1];
 

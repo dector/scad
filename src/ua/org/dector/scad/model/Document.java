@@ -15,7 +15,7 @@ public class Document {
     public Document() {
         selectedItems = new LinkedList<Item>();
         
-        head = new Item(Item.Type.START);
+        head = new Item(Item.Type.BEGIN);
         Item end = new Item(Item.Type.END);
         head.setNext(end);
         end.setPrev(head);

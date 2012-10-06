@@ -43,10 +43,15 @@ public class InputController implements InputProcessor {
             case X:
                 app.createConditionalNode(shiftPressed);
                 break;
+            case T:
+                app.createArrow(shiftPressed);
+                break;
             case SHIFT_LEFT:
             case SHIFT_RIGHT:
                 shiftPressed = true;
                 break;
+            case ENTER:
+                app.insertDownArrow();
             default:
                 handled = false;
         }

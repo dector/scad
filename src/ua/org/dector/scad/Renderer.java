@@ -55,7 +55,8 @@ public class Renderer {
         sb.begin();
         
         Item item = doc.getHead();
-        boolean editMode = (app.getMode() == App.Mode.EDIT);
+        boolean editMode = (app.getMode() == App.Mode.EDIT
+                || app.getMode() == App.Mode.DOWN_ARROW_INSERT);
         
         int x = 10;
         int y = 300;

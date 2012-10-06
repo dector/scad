@@ -23,7 +23,7 @@ public class DocumentTest {
         Item head = doc.getHead();
         
         assertNotNull(head);
-        assertEquals(head.getType(), Item.Type.START);
+        assertEquals(head.getType(), Item.Type.BEGIN);
         assertNull(head.getPrev());
         
         Item postHead = head.getNext();
