@@ -54,12 +54,14 @@ public class App extends Game {
     public void selectPrev(boolean append) {
         if (mode != Mode.EDIT) return;
         
-        Item prev = document.getCurrentItem().getPrev();
+        Item curr = document.getCurrentItem();
+        Item prev = curr.getPrev();
         if (prev == null) return;
-        
-        if (append)
-            document.select(prev);
-        else
+
+        if (append) {
+            if (! document.select(prev))
+                document.deselect(curr);
+        } else
             document.selectOnly(prev);
         
         document.setCurrentItem(prev);
@@ -69,12 +71,14 @@ public class App extends Game {
     public void selectNext(boolean append) {
         if (mode != Mode.EDIT) return;
 
-        Item next = document.getCurrentItem().getNext();
+        Item curr = document.getCurrentItem();
+        Item next = curr.getNext();
         if (next == null) return;
 
-        if (append)
-            document.select(next);
-        else
+        if (append) {
+            if (! document.select(next))
+                document.deselect(curr);
+        } else
             document.selectOnly(next);
 
         document.setCurrentItem(next);
