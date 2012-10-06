@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
+import ua.org.dector.scad.model.nodes.Condition;
 import ua.org.dector.scad.model.nodes.Signal;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import javax.swing.*;
  * @author dector
  */
 public class App extends Game {
-    public enum Mode { NONE, EDIT }
+    public enum Mode { NONE, EDIT, DOWN_ARROW_INSERT }
 
     private Document document;
     private Renderer renderer;
@@ -99,6 +100,33 @@ public class App extends Game {
             Item prevItem = document.getCurrentItem();
             Item nextItem = prevItem.getNext();
             Item newItem = new Item(Item.Type.Y, id);
+
+            newItem.setPrev(prevItem);
+            newItem.setNext(nextItem);
+
+            prevItem.setNext(newItem);
+            nextItem.setPrev(newItem);
+
+            selectNext(false);
+
+            setRendererDirty();
+        }
+    }
+    
+    public void createConditionalNode(boolean enterId) {
+        if (mode != Mode.EDIT) return;
+        if (document.getCurrentItem().getType() == Item.Type.END) return;
+
+        int id;
+        if (enterId)
+            id = enterId(Condition.getLasId() + 1);
+        else
+            id = Condition.nextId();
+
+        if (id != -1) {
+            Item prevItem = document.getCurrentItem();
+            Item nextItem = prevItem.getNext();
+            Item newItem = new Item(Item.Type.X, id);
 
             newItem.setPrev(prevItem);
             newItem.setNext(nextItem);
