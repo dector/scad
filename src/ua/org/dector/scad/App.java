@@ -403,6 +403,9 @@ public class App extends Game {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Saving error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+
+        JOptionPane.showMessageDialog(null, "Document <<" + fileName + ">> saved",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private Signal[] deleteSignalDublication(Signal[] signals) {
