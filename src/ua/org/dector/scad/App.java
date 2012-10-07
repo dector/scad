@@ -7,6 +7,9 @@ import ua.org.dector.scad.model.Item;
 import ua.org.dector.scad.model.nodes.*;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author dector
@@ -256,12 +259,14 @@ public class App extends Game {
                     signals[i] = ((Operational)selected[i].getNode()).getSignal();
                 }
                 
+                signals = deleteSignalDublication(signals);
+                
                 Operational newNode = new Operational(signals);
                 Item newItem = new Item(Item.Type.Y);
                 newItem.setNode(newNode);
 
                 Item firstItem = selected[0];
-                Item lastItem = selected[selCount - 1];
+                Item lastItem = selected[signals.length - 1];
 
                 insertItemBetweenAndSelect(newItem, firstItem.getPrev(), lastItem.getNext());
 
@@ -329,6 +334,20 @@ public class App extends Game {
 
             setRendererDirty();
         }
+    }
+    
+    private Signal[] deleteSignalDublication(Signal[] signals) {
+        Set<Signal> signalSet = new HashSet<Signal>();
+        
+        for (Signal signal : signals)
+            signalSet.add(signal);
+        
+        Signal[] optimised = new Signal[signalSet.size()];
+
+        signalSet.toArray(optimised);
+        Arrays.sort(optimised);
+
+        return optimised;
     }
 
     private void insertItemBetweenAndSelect(Item newItem, Item prevItem, Item nextItem) {
