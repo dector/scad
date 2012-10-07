@@ -75,4 +75,12 @@ public class Document {
     public Item getCurrentItem() {
         return currentItem;
     }
+    
+    public Item getFirstSelected() {
+        return selectedItems.getFirst();
+    }
+
+    public Item getLastSelected() {
+        return selectedItems.getLast();
+    }
 }

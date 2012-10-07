@@ -35,10 +35,16 @@ public class InputController implements InputProcessor {
                     app.cancelArrowInsert();
                 break;
             case LEFT:
-                app.selectPrev(shiftPressed);
+                if (Gdx.input.isKeyPressed(CONTROL_LEFT))
+                    app.moveSelectedLeft();
+                else
+                    app.selectPrev(shiftPressed);
                 break;
             case RIGHT:
-                app.selectNext(shiftPressed);
+                if (Gdx.input.isKeyPressed(CONTROL_LEFT))
+                    app.moveSelectedRight();
+                else
+                    app.selectNext(shiftPressed);
                 break;
             case Y:
                 app.createOperationalNode(shiftPressed);

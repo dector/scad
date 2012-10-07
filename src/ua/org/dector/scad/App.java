@@ -8,6 +8,7 @@ import ua.org.dector.scad.model.nodes.*;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -336,11 +337,66 @@ public class App extends Game {
         }
     }
     
+    public void moveSelectedLeft() {
+        if (mode != Mode.EDIT) return;
+        
+        Item firstSelected = document.getFirstSelected();
+        Item lastSelected = document.getLastSelected();
+
+        if (firstSelected.getType() == Item.Type.BEGIN) return;
+        if (firstSelected.getType() == Item.Type.END) return;
+        if (lastSelected.getType() == Item.Type.BEGIN) return;
+        if (lastSelected.getType() == Item.Type.END) return;
+        if (firstSelected.getPrev().getType() == Item.Type.BEGIN) return;
+
+        Item prevItem = firstSelected.getPrev();
+        Item newPrevItem = prevItem.getPrev();
+        Item nextItem = lastSelected.getNext();
+
+        newPrevItem.setNext(firstSelected);
+        firstSelected.setPrev(newPrevItem);
+
+        lastSelected.setNext(prevItem);
+        prevItem.setPrev(lastSelected);
+
+        prevItem.setNext(nextItem);
+        nextItem.setPrev(prevItem);
+
+        setRendererDirty();
+    }
+
+    public void moveSelectedRight() {
+        if (mode != Mode.EDIT) return;
+
+        Item firstSelected = document.getFirstSelected();
+        Item lastSelected = document.getLastSelected();
+
+        if (firstSelected.getType() == Item.Type.BEGIN) return;
+        if (firstSelected.getType() == Item.Type.END) return;
+        if (lastSelected.getType() == Item.Type.BEGIN) return;
+        if (lastSelected.getType() == Item.Type.END) return;
+        if (lastSelected.getNext().getType() == Item.Type.END) return;
+
+        Item prevItem = firstSelected.getPrev();
+        Item nextItem = lastSelected.getNext();
+        Item newNextItem = nextItem.getNext();
+
+        prevItem.setNext(nextItem);
+        nextItem.setPrev(prevItem);
+
+        nextItem.setNext(firstSelected);
+        firstSelected.setPrev(nextItem);
+
+        lastSelected.setNext(newNextItem);
+        newNextItem.setPrev(lastSelected);
+
+        setRendererDirty();
+    }
+    
     private Signal[] deleteSignalDublication(Signal[] signals) {
         Set<Signal> signalSet = new HashSet<Signal>();
-        
-        for (Signal signal : signals)
-            signalSet.add(signal);
+
+        Collections.addAll(signalSet, signals);
         
         Signal[] optimised = new Signal[signalSet.size()];
 
