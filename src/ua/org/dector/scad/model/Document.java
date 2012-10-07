@@ -10,8 +10,7 @@ public class Document {
     
     private LinkedList<Item> selectedItems;
     private Item currentItem;
-    private Item startingPoint;
-    
+
     public Document() {
         selectedItems = new LinkedList<Item>();
         
@@ -63,13 +62,5 @@ public class Document {
 
     public Item getCurrentItem() {
         return currentItem;
-    }
-
-    public Item getStartingPoint() {
-        return startingPoint;
-    }
-
-    public void setStartingPoint(Item startingPoint) {
-        this.startingPoint = startingPoint;
     }
 }

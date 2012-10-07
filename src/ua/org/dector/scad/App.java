@@ -160,13 +160,17 @@ public class App extends Game {
 
     public void insertDownArrow() {
         if (mode != Mode.DOWN_ARROW_INSERT) return;
-        if (document.getCurrentItem().getType() == Item.Type.BEGIN) return;
+        
+        Item currItem = document.getCurrentItem();
+        if (currItem.getType() == Item.Type.BEGIN) return;
+        if (currItem.getType() == Item.Type.ARROW_UP
+                && currItem.getPrev().getType() == Item.Type.X) return;
 
         Item nextItem = document.getCurrentItem();
         Item prevItem = nextItem.getPrev();
         Item newItem = new Arrow(Item.Type.ARROW_DOWN, unpairedArrow.getId());
 
-        insertItemBetweenAndSelect(newItem, prevItem, nextItem);
+        insertItemBetweenAndSelect(newItem, prevItem, nextItem, false);
 
         unpairedArrow = null;
 
@@ -175,14 +179,45 @@ public class App extends Game {
         setRendererDirty();
     }
     
+    public void removeItem() {
+        Item itemToRemove = document.getCurrentItem();
+        
+        if (itemToRemove.getType() == Item.Type.BEGIN) return;
+        if (itemToRemove.getType() == Item.Type.END) return;
+        
+        Item item = document.getHead();
+        while (item.hasNext() && itemToRemove != item) {
+            item = item.getNext();
+        }
+        
+        if (itemToRemove == item) {
+            Item nextItem = item.getNext();
+            Item prevItem = item.getPrev();
+
+            prevItem.setNext(nextItem);
+            nextItem.setPrev(prevItem);
+
+            selectPrev(false);
+
+            setRendererDirty();
+        }
+    }
+
     private void insertItemBetweenAndSelect(Item newItem, Item prevItem, Item nextItem) {
+        insertItemBetweenAndSelect(newItem, prevItem, nextItem, true);
+    }
+    
+    private void insertItemBetweenAndSelect(Item newItem, Item prevItem, Item nextItem, boolean selectNext) {
         newItem.setPrev(prevItem);
         newItem.setNext(nextItem);
 
         prevItem.setNext(newItem);
         nextItem.setPrev(newItem);
 
-        selectPrev(false);
+        if (selectNext)
+            selectNext(false);
+        else
+            selectPrev(false);
     }
                                              
     private int enterId(int defaultId) {

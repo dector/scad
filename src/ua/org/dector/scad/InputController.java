@@ -52,6 +52,10 @@ public class InputController implements InputProcessor {
                 break;
             case ENTER:
                 app.insertDownArrow();
+                break;
+            case BACKSPACE:
+                app.removeItem();
+                break;
             default:
                 handled = false;
         }
