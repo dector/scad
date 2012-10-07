@@ -9,7 +9,15 @@ public class Condition {
     private int id;
 
     public Condition(int id) {
+        setId(id);
+    }
+
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public static int nextId() {

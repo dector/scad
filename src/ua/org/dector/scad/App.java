@@ -4,10 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
-import ua.org.dector.scad.model.nodes.Arrow;
-import ua.org.dector.scad.model.nodes.Condition;
-import ua.org.dector.scad.model.nodes.Operational;
-import ua.org.dector.scad.model.nodes.Signal;
+import ua.org.dector.scad.model.nodes.*;
 
 import javax.swing.*;
 
@@ -295,6 +292,41 @@ public class App extends Game {
 
             document.selectOnly(item);
             
+            setRendererDirty();
+        }
+    }
+    
+    public void editItemId() {
+        if (mode != Mode.EDIT) return;
+        
+        Item currItem = document.getCurrentItem();
+        Item.Type currItemType = currItem.getType();
+        
+        if (currItemType == Item.Type.BEGIN) return;
+        if (currItemType == Item.Type.END) return;
+        
+        if (currItemType == Item.Type.Y
+                && ((Operational) currItem.getNode()).getSignalsCount() > 1) return;
+
+        // Can't change arrow id
+        /*if (currItemType == Item.Type.ARROW_DOWN
+                || currItemType == Item.Type.ARROW_UP) {
+            Arrow currArrow = (Arrow) currItem;
+            Arrow pairArrow = currArrow.getPair();
+
+            int newId = enterId(currArrow.getId());
+            currArrow.setId(newId);
+            pairArrow.setId(newId);
+
+        } else*/ if (currItemType == Item.Type.X) {
+            Condition cond = ((Conditional) currItem.getNode()).getCondition();
+            cond.setId(enterId(cond.getId()));
+
+            setRendererDirty();
+        } else if (currItemType == Item.Type.Y) {
+            Signal signal = ((Operational) currItem.getNode()).getSignal();
+            signal.setId(enterId(signal.getId()));
+
             setRendererDirty();
         }
     }

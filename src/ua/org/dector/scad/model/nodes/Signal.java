@@ -11,6 +11,10 @@ public class Signal {
     private int id;
 
     public Signal(int id) {
+        setId(id);
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
