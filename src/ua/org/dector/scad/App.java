@@ -7,10 +7,8 @@ import ua.org.dector.scad.model.Item;
 import ua.org.dector.scad.model.nodes.*;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author dector
@@ -170,7 +168,10 @@ public class App extends Game {
 
         Item nextItem = document.getCurrentItem();
         Item prevItem = nextItem.getPrev();
-        Item newItem = new Arrow(Item.Type.ARROW_DOWN, unpairedArrow.getId());
+        Arrow newItem = new Arrow(Item.Type.ARROW_DOWN, unpairedArrow.getId());
+
+        unpairedArrow.setPair(newItem);
+        newItem.setPair(unpairedArrow);
 
         insertItemBetweenAndSelect(newItem, prevItem, nextItem, false);
 
@@ -391,6 +392,17 @@ public class App extends Game {
         newNextItem.setPrev(lastSelected);
 
         setRendererDirty();
+    }
+    
+    public void saveDocument() {
+        String fileName = JOptionPane.showInputDialog(null, "Enter file name to store", "default");
+
+        try {
+            FileManager.store(document, fileName);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Saving error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
     
     private Signal[] deleteSignalDublication(Signal[] signals) {

@@ -61,6 +61,9 @@ public class InputController implements InputProcessor {
             case I:
                 app.editItemId();
                 break;
+            case S:
+                app.saveDocument();
+                break;
             case SHIFT_LEFT:
             case SHIFT_RIGHT:
                 shiftPressed = true;

@@ -6,7 +6,7 @@ import ua.org.dector.scad.model.Item;
  * @author dector
  */
 public class Arrow extends Item {
-    private static int lastId = -1;
+    private static int lastId = 0;
 
     private int id;
     
