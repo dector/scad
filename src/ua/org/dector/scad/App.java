@@ -258,15 +258,15 @@ public class App extends Game {
                 for (int i = 0; i < selCount; i++) {
                     signals[i] = ((Operational)selected[i].getNode()).getSignal();
                 }
-                
-                signals = deleteSignalDublication(signals);
-                
-                Operational newNode = new Operational(signals);
-                Item newItem = new Item(Item.Type.Y);
+
+                Signal[] optSignals = deleteSignalDublication(signals);
+
+                Operational newNode = new Operational(optSignals);
+                Item newItem = new Item(Item.Type.Y, 0);
                 newItem.setNode(newNode);
 
                 Item firstItem = selected[0];
-                Item lastItem = selected[signals.length - 1];
+                Item lastItem = selected[selCount - 1];
 
                 insertItemBetweenAndSelect(newItem, firstItem.getPrev(), lastItem.getNext());
 

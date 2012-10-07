@@ -1,7 +1,5 @@
 package ua.org.dector.scad.model.nodes;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
-
 /**
  * @author dector
  */
@@ -44,5 +42,21 @@ public class Signal implements Comparable<Signal> {
             return -1;
         else
             return 0;
+    }
+
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (other == null)
+            return false;
+        if (this.getClass() != other.getClass())
+            return false;
+
+        Signal otherObj = (Signal) other;
+        return this.getId() == otherObj.getId();
+    }
+
+    public int hashCode() {
+        return 76 + 133 * id;
     }
 }
