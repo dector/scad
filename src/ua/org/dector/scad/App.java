@@ -181,8 +181,24 @@ public class App extends Game {
     }
     
     public void cancelArrowInsert() {
+        if (mode != Mode.DOWN_ARROW_INSERT) return;
+
+        if (unpairedArrow.getPrev().getType() == Item.Type.X) {
+            // If it's after x -> cancel insert last x
+            document.selectOnly(unpairedArrow.getPrev());
+            removeItem();
+        }
+
         // Remove last up arrow
-        // If it's after x -> cancel insert last x
+        if (unpairedArrow.getId() == Arrow.getLasId())
+            Arrow.decLastId();
+
+        document.selectOnly(unpairedArrow);
+        removeItem();
+
+        unpairedArrow = null;
+
+        mode = Mode.EDIT;
     }
     
     public void removeItem() {
@@ -252,7 +268,6 @@ public class App extends Game {
 
                 insertItemBetweenAndSelect(newItem, firstItem.getPrev(), lastItem.getNext());
 
-                document.setCurrentItem(newItem);
                 document.selectOnly(newItem);
 
                 setRendererDirty();
@@ -278,7 +293,6 @@ public class App extends Game {
                 prevItem = item;
             }
 
-            document.setCurrentItem(item);
             document.selectOnly(item);
             
             setRendererDirty();

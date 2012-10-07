@@ -30,6 +30,7 @@ public class Document {
     public void selectOnly(Item item) {
         deselectAll();
         select(item, false);
+        setCurrentItem(item);
     }
 
     public boolean select(Item item, boolean before) {

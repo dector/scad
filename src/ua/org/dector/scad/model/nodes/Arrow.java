@@ -37,6 +37,10 @@ public class Arrow extends Item {
     public static int getLasId() {
         return lastId;
     }
+
+    public static void decLastId() {
+        lastId--;
+    }
     
     public String toString() {
         switch (getType()) {
