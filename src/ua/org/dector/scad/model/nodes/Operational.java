@@ -10,15 +10,47 @@ import java.util.List;
 public class Operational extends Node {
     private LinkedList<Signal> signals;
 
-    public Operational(Signal signal) {
-        signals = new LinkedList<Signal>();
+    public Operational(Signal... signals) {
+        this();
         
-        addSignal(signal);
+        for (Signal signal : signals)
+            addSignal(signal);
     }
     
+    private Operational() {
+        signals = new LinkedList<Signal>();
+    }
+
     public boolean addSignal(Signal signal) {
         return signals.add(signal);
     }
+
+    public int getSignalsCount() {
+        return signals.size();
+    }
+    
+    public Signal getSignal() {
+        if (getSignalsCount() > 0)
+            return signals.getFirst();
+        else
+            return null;
+    }
+
+    public Signal[] getSignals() {
+        Signal[] signals = new Signal[getSignalsCount()];
+
+        this.signals.toArray(signals);
+
+        return signals;
+    }
+    
+    /*public void replaceSignals(Signal... signals) {
+        this.signals.clear();
+
+        for (Signal signal : signals) {
+            addSignal(signal);
+        }
+    }*/
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

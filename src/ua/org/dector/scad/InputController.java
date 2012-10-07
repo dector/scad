@@ -29,7 +29,10 @@ public class InputController implements InputProcessor {
                 app.enterEditMode();
                 break;
             case ESCAPE:
-                app.exitEditMode();
+                if (app.getMode() == App.Mode.EDIT)
+                    app.exitEditMode();
+                else if (app.getMode() == App.Mode.DOWN_ARROW_INSERT)
+                    app.cancelArrowInsert();
                 break;
             case LEFT:
                 app.selectPrev(shiftPressed);
@@ -39,6 +42,9 @@ public class InputController implements InputProcessor {
                 break;
             case Y:
                 app.createOperationalNode(shiftPressed);
+                break;
+            case G:
+                app.toggleGroup();
                 break;
             case X:
                 app.createConditionalNode(shiftPressed);

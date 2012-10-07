@@ -14,6 +14,10 @@ public class Signal {
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static int nextId() {
         return ++lastId;
     }

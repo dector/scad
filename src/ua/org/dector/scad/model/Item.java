@@ -72,6 +72,16 @@ public class Item {
         return node;
     }
     
+    public void setNode(Node node) {
+        switch (type) {
+            case Y:
+                if (node.getClass() == Operational.class)
+                    this.node = node;
+                break;
+            default: break;
+        }
+    }
+    
     public String toString() {
         return (node != null) ? node.toString() : "n/a";
     }

@@ -29,12 +29,15 @@ public class Document {
 
     public void selectOnly(Item item) {
         deselectAll();
-        select(item);
+        select(item, false);
     }
 
-    public boolean select(Item item) {
+    public boolean select(Item item, boolean before) {
         if (! isSelected(item)) {
-            selectedItems.add(item);
+            if (before)
+                selectedItems.addFirst(item);
+            else
+                selectedItems.add(item);
             return true;
         } else
             return false;
@@ -52,10 +55,18 @@ public class Document {
         return selectedItems.contains(item);
     }
     
-    public int getSelectedSize() {
+    public int getSelectedCount() {
         return selectedItems.size();
     }
-    
+
+    public Item[] getSelected() {
+        Item[] selected = new Item[getSelectedCount()];
+
+        selectedItems.toArray(selected);
+
+        return selected;
+    }
+
     public void setCurrentItem(Item item) {
         currentItem = item;
     }

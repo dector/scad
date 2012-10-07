@@ -6,6 +6,7 @@ import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
 import ua.org.dector.scad.model.nodes.Arrow;
 import ua.org.dector.scad.model.nodes.Condition;
+import ua.org.dector.scad.model.nodes.Operational;
 import ua.org.dector.scad.model.nodes.Signal;
 
 import javax.swing.*;
@@ -63,7 +64,7 @@ public class App extends Game {
         if (prev == null) return;
 
         if (append) {
-            if (! document.select(prev))
+            if (! document.select(prev, true))
                 document.deselect(curr);
         } else
             document.selectOnly(prev);
@@ -81,7 +82,7 @@ public class App extends Game {
         if (next == null) return;
 
         if (append) {
-            if (! document.select(next))
+            if (! document.select(next, false))
                 document.deselect(curr);
         } else
             document.selectOnly(next);
@@ -179,6 +180,11 @@ public class App extends Game {
         setRendererDirty();
     }
     
+    public void cancelArrowInsert() {
+        // Remove last up arrow
+        // If it's after x -> cancel insert last x
+    }
+    
     public void removeItem() {
         Item itemToRemove = document.getCurrentItem();
         
@@ -199,6 +205,82 @@ public class App extends Game {
 
             selectPrev(false);
 
+            setRendererDirty();
+        }
+    }
+
+    public void toggleGroup() {
+        if (mode != Mode.EDIT) return;
+
+        Item currItem = document.getCurrentItem();
+        
+        if (document.getSelectedCount() > 1) {
+            boolean valid = true;
+            Item[] selected = document.getSelected();
+            
+            int selCount = selected.length;
+            Item item;
+
+            {
+                int i = 0;
+                while (valid && i < selCount) {
+                    item = selected[i];
+    
+                    if (item.getType() != Item.Type.Y
+                            || ((Operational)item.getNode()).getSignalsCount() > 1) {
+                        valid = false;
+                    } else {
+                        i++;
+                    }
+                }
+            }
+
+            // Group
+            if (valid) {
+                Signal[] signals = new Signal[selCount];
+                
+                for (int i = 0; i < selCount; i++) {
+                    signals[i] = ((Operational)selected[i].getNode()).getSignal();
+                }
+                
+                Operational newNode = new Operational(signals);
+                Item newItem = new Item(Item.Type.Y);
+                newItem.setNode(newNode);
+
+                Item firstItem = selected[0];
+                Item lastItem = selected[selCount - 1];
+
+                insertItemBetweenAndSelect(newItem, firstItem.getPrev(), lastItem.getNext());
+
+                document.setCurrentItem(newItem);
+                document.selectOnly(newItem);
+
+                setRendererDirty();
+            }
+        } else if (currItem.getType() == Item.Type.Y
+                && ((Operational)currItem.getNode()).getSignalsCount() > 1) {
+            // Ungroup
+            Signal[] signals = ((Operational) currItem.getNode()).getSignals();
+            
+            Item item = null;
+            Item prevItem = currItem.getPrev();
+            Item nextItem = currItem.getNext();
+
+            // For gc
+            currItem.setNext(null);
+            currItem.setPrev(null);
+
+            for (Signal signal : signals) {
+                item = new Item(Item.Type.Y, signal.getId());
+
+                insertItemBetweenAndSelect(item, prevItem, nextItem);
+
+                prevItem = item;
+            }
+
+            document.setCurrentItem(item);
+            document.selectOnly(item);
+            
             setRendererDirty();
         }
     }
