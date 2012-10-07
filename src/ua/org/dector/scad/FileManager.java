@@ -4,8 +4,7 @@ import ua.org.dector.scad.model.Document;
 import ua.org.dector.scad.model.Item;
 import ua.org.dector.scad.model.nodes.Arrow;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -22,17 +21,32 @@ public class FileManager {
     private static final int COND_TRUE_TRANSITION           = -1;
 
     public static void store(Document document, String file) throws IOException {
-        ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(file));
+        ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(file + EXTENSION));
+        PrintWriter bufZOUT = new PrintWriter(zout);
 
         ZipEntry transitionMatrixEntry = new ZipEntry(TRANS_MATRIX);
         zout.putNextEntry(transitionMatrixEntry);
 
-        // Mock
         int[][] matrix = getTransitionMatrix(document);
-        for (int[] vector : matrix) {
-            System.out.println(Arrays.toString(vector));
+
+        int lastIndex = matrix.length - 1;
+
+        for (int i = 0; i <= lastIndex; i++) {
+            for (int j = 0; j <= lastIndex; j++) {
+                bufZOUT.print(matrix[i][j]);
+                if (j != lastIndex)
+                    bufZOUT.print(" ");
+            }
+
+            bufZOUT.println();
         }
 
+        /*System.out.println("Transitions matrix:");
+        for (int[] vector : matrix) {
+            System.out.println(Arrays.toString(vector));
+        }*/
+
+        bufZOUT.flush();
         zout.closeEntry();
 
         ZipEntry signalsMatrixEntry = new ZipEntry(SIGN_MATRIX);
