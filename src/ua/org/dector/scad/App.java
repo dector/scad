@@ -12,6 +12,8 @@ import java.text.ParseException;
 import java.util.*;
 
 /**
+ * Main application
+ *
  * @author dector
  */
 public class App extends Game {
@@ -23,7 +25,10 @@ public class App extends Game {
     private Mode mode;
     
     private Arrow unpairedArrow;
-    
+
+    /**
+     * On create
+     */
     public void create() {
         renderer = new Renderer(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -31,7 +36,10 @@ public class App extends Game {
 
         Gdx.input.setInputProcessor(new InputController(this));
     }
-    
+
+    /**
+     * Create new document
+     */
     public void createDocument() {
         if (document == null) 
             document = new Document();
@@ -39,6 +47,9 @@ public class App extends Game {
         setRendererDirty();
     }
 
+    /**
+     * Edit document
+     */
     public void enterEditMode() {
         if (mode == Mode.EDIT) return;
 
@@ -47,6 +58,9 @@ public class App extends Game {
         setRendererDirty();
     }
 
+    /**
+     * View document
+     */
     public void exitEditMode() {
         if (mode != Mode.EDIT) return;
 
@@ -55,6 +69,11 @@ public class App extends Game {
         setRendererDirty();
     }
 
+    /**
+     * Select previous item
+     *
+     * @param append false if select only one
+     */
     public void selectPrev(boolean append) {
         if (mode != Mode.EDIT
                 && mode != Mode.DOWN_ARROW_INSERT) return;
@@ -73,6 +92,11 @@ public class App extends Game {
         setRendererDirty();
     }
 
+    /**
+     * Select next item
+     *
+     * @param append false if select only one
+     */
     public void selectNext(boolean append) {
         if (mode != Mode.EDIT
                 && mode != Mode.DOWN_ARROW_INSERT) return;
@@ -90,7 +114,12 @@ public class App extends Game {
         document.setCurrentItem(next);
         setRendererDirty();
     }
-    
+
+    /**
+     * New operational node
+     *
+     * @param enterId false if init with generated id
+     */
     public void createOperationalNode(boolean enterId) {
         if (mode != Mode.EDIT) return;
         if (document.getCurrentItem().getType() == Item.Type.END) return;
@@ -111,7 +140,12 @@ public class App extends Game {
             setRendererDirty();
         }
     }
-    
+
+    /**
+     * New conditional node
+     *
+     * @param enterId false if init with generated id
+     */
     public void createConditionalNode(boolean enterId) {
         if (mode != Mode.EDIT) return;
         if (document.getCurrentItem().getType() == Item.Type.END) return;
@@ -134,7 +168,12 @@ public class App extends Game {
             setRendererDirty();
         }
     }
-    
+
+    /**
+     * New arrow
+     *
+     * @param enterId false if init with generated id
+     */
     public void createArrow(boolean enterId) {
         if (mode != Mode.EDIT) return;
         if (document.getCurrentItem().getType() == Item.Type.END) return;
@@ -159,6 +198,9 @@ public class App extends Game {
         }
     }
 
+    /**
+     * Put down arrow here
+     */
     public void insertDownArrow() {
         if (mode != Mode.DOWN_ARROW_INSERT) return;
         
@@ -182,7 +224,10 @@ public class App extends Game {
 
         setRendererDirty();
     }
-    
+
+    /**
+     * Discard arrow insert changes
+     */
     public void cancelArrowInsert() {
         if (mode != Mode.DOWN_ARROW_INSERT) return;
 
@@ -203,7 +248,10 @@ public class App extends Game {
 
         mode = Mode.EDIT;
     }
-    
+
+    /**
+     * Remove item
+     */
     public void removeItem() {
         if (mode != Mode.EDIT) return;
 
@@ -230,6 +278,9 @@ public class App extends Game {
         }
     }
 
+    /**
+     * Group/ungroup signals
+     */
     public void toggleGroup() {
         if (mode != Mode.EDIT) return;
 
@@ -305,7 +356,10 @@ public class App extends Game {
             setRendererDirty();
         }
     }
-    
+
+    /**
+     * Edit item id
+     */
     public void editItemId() {
         if (mode != Mode.EDIT) return;
         
@@ -340,7 +394,10 @@ public class App extends Game {
             setRendererDirty();
         }
     }
-    
+
+    /**
+     * Move item(s) left
+     */
     public void moveSelectedLeft() {
         if (mode != Mode.EDIT) return;
         
@@ -369,6 +426,9 @@ public class App extends Game {
         setRendererDirty();
     }
 
+    /**
+     * Move item(s) right
+     */
     public void moveSelectedRight() {
         if (mode != Mode.EDIT) return;
 
@@ -396,7 +456,10 @@ public class App extends Game {
 
         setRendererDirty();
     }
-    
+
+    /**
+     * Save document
+     */
     public void saveDocument() {
         String fileName = JOptionPane.showInputDialog(null, "Enter file name to store", "default");
 
@@ -411,6 +474,9 @@ public class App extends Game {
                 "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Load document
+     */
     public void loadDocument() {
         String fileName = JOptionPane.showInputDialog(null, "Enter file name to store", "default");
 
@@ -425,9 +491,17 @@ public class App extends Game {
 
         if (loadedDoc != null) {
             document = loadedDoc;
+
+            setRendererDirty();
         }
     }
 
+    /**
+     * Delete dublicated signals
+     *
+     * @param signals signals array
+     * @return crear array
+     */
     private Signal[] deleteSignalDublication(Signal[] signals) {
         Set<Signal> signalSet = new HashSet<Signal>();
 

@@ -1,6 +1,8 @@
 package ua.org.dector.scad.model.nodes;
 
 /**
+ * Yi signal inside Operational node
+ *
  * @author dector
  */
 public class Signal implements Comparable<Signal> {
@@ -8,22 +10,47 @@ public class Signal implements Comparable<Signal> {
     
     private int id;
 
+    /**
+     * Default constructor
+     *
+     * @param id signal id
+     */
     public Signal(int id) {
         setId(id);
     }
 
+    /**
+     * Sets id for signal
+     *
+     * @param id new id value
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Returns id
+     *
+     * @return id value
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Generates next id
+     *
+     * @return next id
+     */
     public static int nextId() {
         return ++lastId;
     }
-    
+
+    /**
+     * Returns last id
+     *
+     * @return last setted id
+     */
     public static int getLasId() {
         return lastId;
     }

@@ -12,13 +12,22 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
+ * Save/store document tools
+ *
  * @author dector
  */
 public class FileManager {
     private static final String EXTENSION           = ".scp";
     private static final String TRANS_MATRIX        = "tMatrix";
     private static final String SIGN_N_COND_MATRIX  = "sNcMatrix";
-    
+
+    /**
+     * Store document to file
+     *
+     * @param document document to store
+     * @param file project filename
+     * @throws IOException if some shit happend
+     */
     public static void store(Document document, String file) throws IOException {
         ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(file + EXTENSION));
         PrintWriter bufZOUT = new PrintWriter(zout);
@@ -87,6 +96,14 @@ public class FileManager {
         zout.close();
     }
 
+    /**
+     * Load document from file
+     *
+     * @param file project filename
+     * @return loaded document
+     * @throws IOException if some I/O shit happend
+     * @throws ParseException if project file was corrupted
+     */
     public static Document restore(String file) throws IOException, ParseException {
         ZipInputStream zin = new ZipInputStream(new FileInputStream(file + EXTENSION));
         

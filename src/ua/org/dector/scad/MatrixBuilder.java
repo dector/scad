@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
+ * Class for creating matrices from document
+ *
  * @author dector
  */
 public class MatrixBuilder {
@@ -30,7 +32,12 @@ public class MatrixBuilder {
     private int[][] transMatrix;
     private String[] signNCondTitles;
     private int[][] signNCondMatrix;
-    
+
+    /**
+     * New instance
+     *
+     * @param doc document
+     */
     public MatrixBuilder(Document doc) {
         this.doc = doc;
 
@@ -39,6 +46,9 @@ public class MatrixBuilder {
         indexes = new HashMap<Item, Integer>();
     }
 
+    /**
+     * Build matrices
+     */
     public void build() {
         prepare();
         buildTransMatrix();       
@@ -180,14 +190,29 @@ public class MatrixBuilder {
         return next;
     }
 
+    /**
+     * REturns transitions matrix
+     *
+     * @return transitions matrix
+     */
     public int[][] getTransMatrix() {
         return transMatrix;
     }
 
+    /**
+     * Returns titles of signals and conditions
+     *
+     * @return titles of signals and conditions
+     */
     public String[] getSignNCondTitles() {
         return signNCondTitles;
     }
 
+    /**
+     * Returns signals and conditions matrix
+     *
+     * @return signals and conditions matrix
+     */
     public int[][] getSignNCondMatrix() {
         return signNCondMatrix;
     }

@@ -5,26 +5,44 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Operational node model
+ *
  * @author dector
  */
 public class Operational extends Node {
     private LinkedList<Signal> signals;
 
+    /**
+     * Default constructor with some signals
+     *
+     * @param signals {Yi} signals to init with
+     */
     public Operational(Signal... signals) {
         this();
         
         for (Signal signal : signals)
             addSignal(signal);
     }
-    
+
     private Operational() {
         signals = new LinkedList<Signal>();
     }
 
+    /**
+     * Add new signal
+     *
+     * @param signal added signal
+     * @return true if added
+     */
     public boolean addSignal(Signal signal) {
         return signals.add(signal);
     }
 
+    /**
+     * Count signals inside
+     *
+     * @return signals count
+     */
     public int getSignalsCount() {
         return signals.size();
     }
@@ -36,6 +54,11 @@ public class Operational extends Node {
             return null;
     }
 
+    /**
+     * Returns all inner signals
+     *
+     * @return signals as array
+     */
     public Signal[] getSignals() {
         Signal[] signals = new Signal[getSignalsCount()];
 
