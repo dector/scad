@@ -81,9 +81,9 @@ public class Arrow extends Item {
     public String toString() {
         switch (getType()) {
             case ARROW_DOWN:
-                return "V" + getId();
+                return "↓" + getId();
             case ARROW_UP:
-                return "^" + getId();
+                return "↑" + getId();
             default:
                 return super.toString();
         }

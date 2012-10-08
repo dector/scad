@@ -41,9 +41,17 @@ public class Renderer {
     private void initFonts() {
         fonts = new BitmapFont[FONTS_COUNT];
         
-        fonts[FONT_DEFAULT] = new BitmapFont();
+        fonts[FONT_DEFAULT] = new BitmapFont(
+            Gdx.files.internal("res/lsa.fnt"),
+            Gdx.files.internal("res/lsa.png"),
+            false
+        );
         
-        fonts[FONT_SELECTED] = new BitmapFont();
+        fonts[FONT_SELECTED] = new BitmapFont(
+                Gdx.files.internal("res/lsa.fnt"),
+                Gdx.files.internal("res/lsa.png"),
+                false
+        );
         fonts[FONT_SELECTED].setColor(Color.RED);
     }
     
