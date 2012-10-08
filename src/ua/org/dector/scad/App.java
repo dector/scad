@@ -8,6 +8,7 @@ import ua.org.dector.scad.model.nodes.*;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -204,6 +205,8 @@ public class App extends Game {
     }
     
     public void removeItem() {
+        if (mode != Mode.EDIT) return;
+
         Item itemToRemove = document.getCurrentItem();
         
         if (itemToRemove.getType() == Item.Type.BEGIN) return;
@@ -407,7 +410,18 @@ public class App extends Game {
         JOptionPane.showMessageDialog(null, "Document <<" + fileName + ">> saved",
                 "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
+    public void loadDocument() {
+        String fileName = JOptionPane.showInputDialog(null, "Enter file name to store", "default");
+
+        try {
+            Document loadedDoc = FileManager.restore(fileName);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Loading error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
     private Signal[] deleteSignalDublication(Signal[] signals) {
         Set<Signal> signalSet = new HashSet<Signal>();
 
