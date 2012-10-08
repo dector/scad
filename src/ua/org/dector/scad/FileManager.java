@@ -210,6 +210,11 @@ public class FileManager {
         
         Item item = doc.getHead();
         
+        Map<Integer, Item> indexedItems = new HashMap<Integer, Item>();
+
+        indexedItems.put(0, doc.getHead());
+        indexedItems.put(transitionsMatrix.length - 1, doc.getHead().getNext());
+        
         while (nodeIndex <= transitionsMatrix.length - 2) {
             nodeEntries = findNodeEntries(nodeIndex, signAndCondTitles, signAndCondMatrix);
 
@@ -266,6 +271,8 @@ public class FileManager {
             newItem.setNext(nextItem);
             nextItem.setPrev(newItem);
 
+            indexedItems.put(nodeIndex, newItem);
+                    
             item = newItem;
             nodeIndex++;
 
@@ -273,6 +280,68 @@ public class FileManager {
         }
 
         // Insert conditional transitions and other arrows
+
+        // Check transitions matrix
+        int transCount;
+
+        for (int[] transitionVector : transitionsMatrix) {
+            transCount = 0;
+
+            for (int transition : transitionVector) {
+                if (transition != 0) transCount++;
+            }
+
+            if (transCount > 2) {
+                throw new ParseException("Transitions matrix is corrupted", -1);
+            }
+        }
+        
+        // Setup transitions
+        Item currItem;
+        Item otherItem = null;
+        boolean done;
+        int trans;
+        int arrowId = 1;
+        
+        for (int from = 0; from < transitionsMatrix.length - 1; from++) {
+            currItem = indexedItems.get(from);
+            done = false;
+            
+            for (int to = 0; (to < transitionsMatrix.length) && (! done); to++) {
+                trans = transitionsMatrix[from][to];
+                
+                Item.Type type = currItem.getType();
+                
+                if ((trans == 1 && type == Item.Type.Y && from != to - 1)
+                        || (trans == 1 && type == Item.Type.X)) {
+                    otherItem = indexedItems.get(to);
+
+                    Item currNextItem = currItem.getNext();
+                    Item otherPrevItem = otherItem.getPrev();
+                    
+                    Arrow upArrow = new Arrow(Item.Type.ARROW_UP, arrowId);
+                    Arrow downArrow = new Arrow(Item.Type.ARROW_DOWN, arrowId);
+                    upArrow.setPair(downArrow);
+                    downArrow.setPair(upArrow);
+
+                    arrowId++;
+
+                    done = true;
+
+                    currItem.setNext(upArrow);
+                    upArrow.setPrev(currItem);
+
+                    upArrow.setNext(currNextItem);
+                    currNextItem.setPrev(upArrow);
+
+                    otherPrevItem.setNext(downArrow);
+                    downArrow.setPrev(otherPrevItem);
+
+                    downArrow.setNext(otherItem);
+                    otherItem.setPrev(downArrow);
+                }
+            }
+        }
     }
     
     private static String[] findNodeEntries(int nodeIndex, String[] signAndCondTitles, int[][] signAndCondMatrix) {
