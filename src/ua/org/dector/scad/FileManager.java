@@ -1,6 +1,8 @@
 package ua.org.dector.scad;
 
 import ua.org.dector.scad.model.Document;
+import ua.org.dector.scad.model.Item;
+import ua.org.dector.scad.model.nodes.*;
 
 import java.io.*;
 import java.text.ParseException;
@@ -88,8 +90,6 @@ public class FileManager {
     public static Document restore(String file) throws IOException, ParseException {
         ZipInputStream zin = new ZipInputStream(new FileInputStream(file + EXTENSION));
         
-        Document doc = new Document();
-
         int[][] transitionsMatrix;
         String[] signAndCondTitles;
         int[][] signAndCondMatrix;
@@ -99,33 +99,20 @@ public class FileManager {
         
         transitionsMatrix = parseTransitionsMatrix(new Scanner(zin));
 
-        System.out.println("Transitions matrix:");
-        for (int[] vector : transitionsMatrix) {
-            System.out.println(Arrays.toString(vector));
-        }
-
         zin.closeEntry();
         zin.getNextEntry();
 
         Scanner secondScanner = new Scanner(zin);
         
         signAndCondTitles = parseSignAndCondTitles(secondScanner);
-
-        System.out.println("Sign & cond titles:");
-        System.out.println(Arrays.toString(signAndCondTitles));
-
         signAndCondMatrix = parseSignAndCondMatrix(secondScanner);
-
-        System.out.println("Sign & cond matrix:");
-        for (int[] vector : signAndCondMatrix) {
-            System.out.println(Arrays.toString(vector));
-        }
 
         zin.closeEntry();
         zin.close();
                 
-        // Setup all nodes
-        // Insert conditional transitions and other arrows 
+        Document doc = new Document();
+        
+        buildDocument(doc, transitionsMatrix, signAndCondTitles, signAndCondMatrix);
 
         return doc;
     }
@@ -208,5 +195,99 @@ public class FileManager {
         }
 
         return matrix;
+    }
+    
+    private static void buildDocument(Document doc, int[][] transitionsMatrix,
+                                      String[] signAndCondTitles, int[][] signAndCondMatrix) throws ParseException {
+        // Setup all nodes
+        int nodeIndex = 1;
+        String[] nodeEntries;
+        String beg;
+        int entryId;
+
+        Signal[] signals = null;
+        Condition condition = null;
+        
+        Item item = doc.getHead();
+        
+        while (nodeIndex <= transitionsMatrix.length - 2) {
+            nodeEntries = findNodeEntries(nodeIndex, signAndCondTitles, signAndCondMatrix);
+
+            beg = nodeEntries[0].substring(0, 1);
+            for (int i = 1; i < nodeEntries.length; i++)
+                if (! nodeEntries[i].startsWith(beg))
+                    throw new ParseException("Mixing signals and conditions in one node", -1);
+
+            // Check node type
+            
+            boolean operational;
+            if (beg.equals("X")) {
+                if (nodeEntries.length > 1)
+                    throw new ParseException("More than one condition in conditional node", -1);
+                
+                operational = false;
+            } else if (beg.equals("Y")) {
+                operational = true;
+                
+                signals = new Signal[nodeEntries.length];
+            } else
+                throw new ParseException("WTF in signals and conditions table?", -1);
+            
+            // Create item & node
+            
+            for (int i = 0; i < nodeEntries.length; i++) {
+                entryId = Integer.valueOf(nodeEntries[i].substring(1));
+                
+                if (operational) {
+                    signals[i] = new Signal(entryId); 
+                } else {
+                    condition = new Condition(entryId);
+                }
+            }
+            
+            Item newItem;
+            Node node;
+            
+            if (operational) {
+                node = new Operational(signals);
+                newItem = new Item(Item.Type.Y, 0);
+            } else {
+                node = new Conditional(condition);
+                newItem = new Item(Item.Type.X, 0);
+            }
+
+            newItem.setNode(node);
+            
+            Item nextItem = item.getNext();
+            
+            item.setNext(newItem);
+            newItem.setPrev(item);
+
+            newItem.setNext(nextItem);
+            nextItem.setPrev(newItem);
+
+            item = newItem;
+            nodeIndex++;
+
+            /*System.out.println(newItem);*/
+        }
+
+        // Insert conditional transitions and other arrows
+    }
+    
+    private static String[] findNodeEntries(int nodeIndex, String[] signAndCondTitles, int[][] signAndCondMatrix) {
+        List<String> entries = new LinkedList<String>();
+
+        nodeIndex--;
+        
+        for (int i = 0; i < signAndCondMatrix[nodeIndex].length; i++)
+            if (signAndCondMatrix[nodeIndex][i] == 1)
+                entries.add(signAndCondTitles[i]);
+        
+        String[] entriesArray = new String[entries.size()];
+
+        entries.toArray(entriesArray);
+
+        return entriesArray;
     }
 }

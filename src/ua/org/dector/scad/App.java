@@ -414,11 +414,17 @@ public class App extends Game {
     public void loadDocument() {
         String fileName = JOptionPane.showInputDialog(null, "Enter file name to store", "default");
 
+        Document loadedDoc = null;
         try {
-            Document loadedDoc = FileManager.restore(fileName);
+            loadedDoc = FileManager.restore(fileName);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Loading error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getClass() + ": " + e.getMessage(),
+                    "Loading error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
+        }
+
+        if (loadedDoc != null) {
+            document = loadedDoc;
         }
     }
 
