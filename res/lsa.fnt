@@ -1,23 +1,25 @@
 info face="DejaVu Sans" size=16 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=0,0
 common lineHeight=19 base=15 scaleW=512 scaleH=512 pages=1 packed=0
 page id=0 file="lsa.png"
-chars count=16
+chars count=18
 char id=32   x=0     y=0     width=0     height=0     xoffset=0     yoffset=15    xadvance=5     page=0  chnl=0 
-char id=8595   x=0     y=0     width=9     height=14     xoffset=3     yoffset=2    xadvance=13     page=0  chnl=0 
-char id=8593   x=9     y=0     width=9     height=14     xoffset=3     yoffset=2    xadvance=13     page=0  chnl=0 
-char id=57   x=18     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=56   x=28     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=55   x=38     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=53   x=48     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=52   x=57     y=0     width=11     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=51   x=68     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=50   x=77     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=49   x=86     y=0     width=9     height=14     xoffset=2     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=69   x=95     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
-char id=89   x=105     y=0     width=10     height=14     xoffset=0     yoffset=2    xadvance=9     page=0  chnl=0 
-char id=88   x=115     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=11     page=0  chnl=0 
-char id=66   x=125     y=0     width=11     height=14     xoffset=1     yoffset=2    xadvance=11     page=0  chnl=0 
-char id=54   x=136     y=0     width=9     height=13     xoffset=1     yoffset=3    xadvance=10     page=0  chnl=0 
-char id=48   x=145     y=0     width=10     height=13     xoffset=1     yoffset=3    xadvance=10     page=0  chnl=0 
+char id=41   x=0     y=0     width=5     height=16     xoffset=1     yoffset=2    xadvance=6     page=0  chnl=0 
+char id=40   x=5     y=0     width=5     height=16     xoffset=1     yoffset=2    xadvance=6     page=0  chnl=0 
+char id=8595   x=10     y=0     width=9     height=14     xoffset=3     yoffset=2    xadvance=13     page=0  chnl=0 
+char id=8593   x=19     y=0     width=9     height=14     xoffset=3     yoffset=2    xadvance=13     page=0  chnl=0 
+char id=57   x=28     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=56   x=38     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=55   x=48     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=53   x=58     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=52   x=67     y=0     width=11     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=51   x=78     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=50   x=87     y=0     width=9     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=49   x=96     y=0     width=9     height=14     xoffset=2     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=69   x=105     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=10     page=0  chnl=0 
+char id=89   x=115     y=0     width=10     height=14     xoffset=0     yoffset=2    xadvance=9     page=0  chnl=0 
+char id=88   x=125     y=0     width=10     height=14     xoffset=1     yoffset=2    xadvance=11     page=0  chnl=0 
+char id=66   x=135     y=0     width=11     height=14     xoffset=1     yoffset=2    xadvance=11     page=0  chnl=0 
+char id=54   x=146     y=0     width=9     height=13     xoffset=1     yoffset=3    xadvance=10     page=0  chnl=0 
+char id=48   x=155     y=0     width=10     height=13     xoffset=1     yoffset=3    xadvance=10     page=0  chnl=0 
 kernings count=1329
 kerning first=66  second=89  amount=-1

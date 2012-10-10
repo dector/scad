@@ -41,7 +41,7 @@ public class App extends Game {
      * Create new document
      */
     public void createDocument() {
-        if (document == null) 
+//        if (document == null)
             document = new Document();
 
         setRendererDirty();
@@ -398,7 +398,7 @@ public class App extends Game {
     /**
      * Move item(s) left
      */
-    public void moveSelectedLeft() {
+    public void movectLefctedLeft() {
         if (mode != Mode.EDIT) return;
         
         Item firstSelected = document.getFirstSelected();
